@@ -1013,8 +1013,9 @@ public class TextAreaPainter extends JComponent implements TabExpander
 
 		fontRenderContext = new FontRenderContext(null,false,false);
 
-		addExtension(LINE_BACKGROUND_LAYER,new PaintLineBackground());
+		addExtension(LINE_BACKGROUND_LAYER,new PaintLineBackground());		
 		addExtension(SELECTION_LAYER,new PaintSelection());
+		addExtension(WRAP_GUIDE_LAYER,new PaintNotebookLines());
 		addExtension(WRAP_GUIDE_LAYER,new PaintWrapGuide());
 		addExtension(BRACKET_HIGHLIGHT_LAYER,new StructureMatcher
 			.Highlight(textArea));
@@ -1370,6 +1371,28 @@ public class TextAreaPainter extends JComponent implements TabExpander
 			return null;
 		}
 	} //}}}
+	
+	
+	//{{{ PaintNotebookLines class adds blue lines to text editor area
+	private class PaintNotebookLines extends TextAreaExtension
+	{
+	
+		@Override public void paintValidLine(Graphics2D gfx, int screenLine,
+				int physicalLine, int start, int end, int y){
+			gfx.setColor(Color.BLUE);
+								
+			gfx.drawLine(0,screenLine*getLineHeight(),getWidth(),screenLine*getLineHeight());			
+		}
+		
+		@Override public void paintInvalidLine(Graphics2D gfx, int screenLine,
+				int y){
+			gfx.setColor(Color.BLUE);
+								
+			gfx.drawLine(0,screenLine*getLineHeight(),getWidth(),screenLine*getLineHeight());			
+		}
+		
+	}
+	//}}}
 
 	//{{{ PaintText class
 	private class PaintText extends TextAreaExtension
