@@ -569,7 +569,48 @@ public class TextAreaPainter extends JComponent implements TabExpander
 		this.eolMarkers = eolMarkers;
 		repaint();
 	} //}}}
+	
+	//{{{ getNotebookLineColor() method
+	/**
+	 * Returns the notebook line color.
+	 */
+	public final Color getNotebookLineColor()
+	{
+		return notebookLineColor;
+	} //}}}
 
+	//{{{ setNotebookLineColor() method
+	/**
+	 * Sets the wrap guide color.
+	 * @param wrapGuideColor The wrap guide color
+	 */
+	public final void setNotebookLineColor(Color notebookLineColor)
+	{
+		this.notebookLineColor = notebookLineColor;
+		repaint();
+	} //}}}
+
+	//{{{ isWrapGuidePainted() method
+	/**
+	 * Returns true if the wrap guide is drawn, false otherwise.
+	 * @since jEdit 4.0pre4
+	 */
+	public final boolean isNotebookLinePainted()
+	{
+		return notebookLines;
+	} //}}}
+
+	//{{{ setNotebookLinePainted() method
+	/**
+	 * Sets if the notebook lines are to be drawn.
+	 * @param notebookLines True if the notebook lines should be drawn, false otherwise
+	 */
+	public final void setNotebookLinePainted(boolean notebookLines)
+	{
+		this.notebookLines = notebookLines;
+		repaint();
+	} //}}}
+	
 	//{{{ getWrapGuideColor() method
 	/**
 	 * Returns the wrap guide color.
@@ -970,6 +1011,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
 	Color eolMarkerColor;
 	String eolMarkerChar;
 	Color wrapGuideColor;
+	Color notebookLineColor=Color.BLUE;
 
 	SyntaxStyle[] foldLineStyle;
 
@@ -979,6 +1021,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
 	boolean structureHighlight;
 	boolean eolMarkers;
 	boolean wrapGuide;
+	boolean notebookLines;
 	AntiAlias antiAlias;
 	boolean fracFontMetrics;
 	RenderingHints renderingHints;
@@ -1020,6 +1063,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
 			.Highlight(textArea));
 		addExtension(TEXT_LAYER,new PaintText());
 		addExtension(TEXT_LAYER,new PaintSelectionText());
+		addExtension(WRAP_GUIDE_LAYER, new PaintNotebookLines());
 		caretExtension = new PaintCaret();
 
 		extraLineSpacing = 0;
@@ -1330,7 +1374,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
 			return x;
 		}
 	} //}}}
-
+	
 	//{{{ PaintWrapGuide class
 	private class PaintWrapGuide extends TextAreaExtension
 	{
@@ -1369,6 +1413,31 @@ public class TextAreaPainter extends JComponent implements TabExpander
 
 			return null;
 		}
+	} //}}}
+	
+	
+
+	//{{{ PaintNotebookLines class adds colored lines to the text editor area
+	private class PaintNotebookLines extends TextAreaExtension
+	{
+		@Override
+		public void paintValidLine(Graphics2D gfx, int screenLine,
+			int physicalLine, int start, int end, int y)
+		{
+			if(isNotebookLinePainted()) {
+				gfx.setColor(getNotebookLineColor());
+				int topLine = y;
+				int baseLine = topLine + getLineHeight();
+				
+				gfx.drawLine(0, baseLine, getWidth(),baseLine);
+				if(screenLine!=0) {
+					gfx.drawLine(0, topLine, getWidth(), topLine);
+				}
+			}
+		}
+		
+
+		
 	} //}}}
 
 	//{{{ PaintText class
