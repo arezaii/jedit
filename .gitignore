@@ -1,2 +1,4 @@
 **/.gitaccess
 **/.idea/
+**/build/
+**/lib/
