@@ -249,6 +249,12 @@ public class TextAreaOptionPane extends AbstractOptionPane
 			"options.textarea.insertCompletionWithDigit"));
 		insertCompletionWithDigit.setSelected(jEdit.getBooleanProperty("insertCompletionWithDigit"));
 		addComponent(insertCompletionWithDigit);
+		
+		/* notebook lines*/
+		notebookLines = new JCheckBox(jEdit.getProperty(
+				"options.textarea.notebookLines"));
+		notebookLines.setSelected(jEdit.getBooleanProperty("notebookLines"));
+			addComponent(notebookLines);
 	} //}}}
 
 	//{{{ _save() method
@@ -306,6 +312,7 @@ public class TextAreaOptionPane extends AbstractOptionPane
 		jEdit.setBooleanProperty("insertCompletionWithDigit", insertCompletionWithDigit.isSelected());
 		jEdit.setIntegerProperty("options.textarea.lineSpacing",
 					 Integer.valueOf(lineSpacing.getText()));
+		jEdit.setBooleanProperty("notebookLines", notebookLines.isSelected());
 	} //}}}
 
 	//{{{ Private members
@@ -340,6 +347,7 @@ public class TextAreaOptionPane extends AbstractOptionPane
 	private JCheckBox completeFromAllBuffers;
 	private JCheckBox insertCompletionWithDigit;
 	private JTextField lineSpacing;
+	private JCheckBox notebookLines;
 	//}}}
 
 	//{{{ FontList class
